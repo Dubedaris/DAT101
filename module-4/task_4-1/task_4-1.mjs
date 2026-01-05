@@ -1,9 +1,21 @@
 "use strict";
 import { printOut, newLine } from "../../common/script/utils.mjs";
 
+const accounts = {Normal: "Brukskonto", Savings: "Sparekonto", Credit: "Kredittkonto", Pension: "Pensjonskonto"};
+class TAccount {
+    constructor (type) {
+        
+    }
+}
+
+printOut("Account Types: ");
+printOut(accounts)
+printOut(newLine)
+
 printOut("--- Part 1 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+printOut(accounts.Normal + ", " + accounts.Savings + ", " + accounts.Credit + ", " + accounts.Pension)
+
 printOut(newLine);
 
 printOut("--- Part 2 ----------------------------------------------------------------------------------------------");
