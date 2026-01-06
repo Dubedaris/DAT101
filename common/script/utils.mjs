@@ -42,8 +42,6 @@ export function printOut(aElement) {
       case "boolean":
         DOMTextOut.innerHTML += `${aElement}${newLine}`;
         break;
-        case "undefined":
-        DOMTextOut.innerHTML += "Undefined"
       default:
         console.error("Unsupported type:", type);
     }
