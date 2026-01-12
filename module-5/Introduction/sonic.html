@@ -13,11 +13,110 @@
         user-select: none; /* Standard syntax */
       }
     </style>
+    <!-- Import map: map the bare specifier "three" to the local module build. -->
+    <script type="importmap">
+      {
+        "imports": {
+          "libSprite": "../../common/script/libSprite.mjs",
+          "lib2d": "../../common/script/lib2d.mjs"
+        }
+      }
+    </script>
   </head>
   <body class="prevent-select">
     <canvas id="cvs" style="background-color: antiquewhite" width="1024" height="512"></canvas>
   </body>
-  <script defer>
+  <script type = "module" defer>
+    //import libraries
+    import {TSpriteCanvas, TSprite} from "libSprite";
+
+  // prettier-ignore
+  const SpriteInfoList = {
+    sonic1: { x: 0, y:   0, width: 102, height: 125, count: 6},
+    sonic2: { x: 0, y: 125, width: 102, height: 125, count: 9},
+    sonic3: { x: 0, y: 250, width: 102, height: 125, count: 9},
+    sonic4: { x: 0, y: 375, width: 102, height:  75, count: 7},
+    sonic5: { x: 0, y: 450, width: 100, height: 130, count: 5},
+    sonic6: { x: 0, y: 575, width: 102, height: 125, count: 3},
+    sonic7: { x: 0, y: 700, width: 102, height: 125, count: 2},
+    sonic8: { x: 0, y: 830, width: 102, height: 125, count: 2},
+    sonic9: { x: 0, y: 950, width: 102, height: 125, count: 4}
+  }
+
+    //Global variables
+    const cvs = document.getElementById("cvs");
+    const ctx = cvs.getContext("2d");
+    const spcvs = new TSpriteCanvas(cvs);
+    const hero1 = new TSprite(spcvs, SpriteInfoList.sonic1, 0, 50);
+    const hero2 = new TSprite(spcvs, SpriteInfoList.sonic2, 0, 200);
+    const hero3 = new TSprite(spcvs, SpriteInfoList.sonic3, 0, 350);
+    const hero8 = new TSprite(spcvs, SpriteInfoList.sonic8, 350, 50);
+
+    //Functions
+    function drawCanvas () {
+      // This is a high performance function
+      // Do not do any heavy calculations here
+      hero1.draw();
+      hero2.draw();
+      hero3.draw();
+      hero8.draw();
+    }
+    let dir = 1; // 1 = right, -1 = left
+
+
+    function animateSonic () {
+      hero2.x += 4 * dir;
+      if((hero2.x > cvs.width - hero2.width) || (hero2.x + hero2.width < 0 && dir < 0)) {
+        dir *= -1;
+        hero2.flipHorizontal(); }
+        hero3.x +=15;
+      if(hero3.x > cvs.width) {
+        hero3.x = 0 - hero3.width;
+        hero1.hidden = !hero1.hidden;
+      }
+    }
+
+    function sheetLoaded () {
+      console.log("Sheet Loaded");
+      spcvs.onDraw = drawCanvas;
+      spcvs.showFramerate = true;
+      hero1.animationSpeed = 4;
+      hero1.hidden = false;
+      hero2.animationSpeed = 10;
+      hero2.hidden = false;
+      hero2.rotation = 0;
+      hero3.animationSpeed = 20;
+      hero3.hidden = false;
+      hero8.animationSpeed = 10;
+      //hero.flipHorizontal();
+
+      // Start animation
+      setInterval(animateSonic, 20);
+      setInterval(animateSonic, 20);
+      
+
+    }
+
+    function onKeyDown(aEvent) {
+      switch(aEvent.code) {
+        case "ArrowUp": 
+          hero8.y -= 10;
+          break
+        case "ArrowRight": 
+          hero8.x += 10;
+          break
+        case "ArrowDown":
+          hero8.y += 10;
+          break
+        case "ArrowLeft": 
+          hero8.x -=10;
+          break
+      }
+    }
+
+    //Main application
+    spcvs.loadSpriteImage("sonic_sprite_sheet.png", sheetLoaded);
+    document.addEventListener("keydown", onKeyDown);
 
   </script>
 </html>
