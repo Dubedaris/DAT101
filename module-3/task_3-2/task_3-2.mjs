@@ -155,22 +155,27 @@ let d3 = Math.ceil(Math.random() * 6);
 let d4 = Math.ceil(Math.random() * 6);
 let d5 = Math.ceil(Math.random() * 6);
 let d6 = Math.ceil(Math.random() * 6);
-const dice = [d1, d2, d3, d4, d5, d6];
+const dice = `${[d1, d2, d3, d4, d5, d6]}`;
 
-function countOccurrence (aDie, aTargetNumber) {
+/*function diceThrow () {
+    d1 = Math.ceil(Math.random() * 6);
+    d2 = Math.ceil(Math.random() * 6);
+    d3 = Math.ceil(Math.random() * 6);
+    d4 = Math.ceil(Math.random() * 6);
+    d5 = Math.ceil(Math.random() * 6);
+    d6 = Math.ceil(Math.random() * 6);
+}*/
 
-}
-
-
-let fullStraight = [];
-let threePairs = [];
-let tower = [];
-let yahtzee = [];
+//dice.match(/value/g)
 
 let throwsFullStraight = 0;
 let throwsThreePairs = 0;
 let throwsTower = 0;
 let throwsYahtzee = 0;
+
+printOut(dice);
+console.log(dice.match(/3/g));
+
 
 //It might be easier to do with string, because there are functions that can help you count instances of each value.
 //It can be done with arrays as well, but there might be more work with loops and such. 
@@ -181,10 +186,4 @@ let throwsYahtzee = 0;
 // Do i throw dice and push the numbers I want into the relevant arrays?
 // while loop with if statement?
 // Should i make functions for every result i want?
-
-
-printOut("test");
-
-
-
 printOut(newLine);

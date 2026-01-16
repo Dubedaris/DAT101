@@ -5,7 +5,7 @@ export class THero extends TSprite{
     #gravity;
     #speed;
     constructor(aSpcvs, aSPI) {
-        const heroX = aSPI.background.width/2;
+        const heroX = aSPI.background.width/3;
         const heroY = (aSPI.background.height-aSPI.ground.height)/2;
         super(aSpcvs, aSPI.hero1, heroX, heroY)
         this.animationSpeed = 10;
@@ -19,7 +19,7 @@ export class THero extends TSprite{
             this.#speed += this.#gravity;
             this.y += this.#speed;
             if(this.rotation < 90) {
-                this.rotation = this.#speed*20;
+                this.rotation = this.#speed*15;
             }
         }
     }

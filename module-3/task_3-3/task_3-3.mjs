@@ -174,11 +174,12 @@ two: Value for the maximum size of the text string. Parameter three: Text charac
 Consecutive insertion of characters (boolean value). Take the text parameter; if it's smaller than the
 maximum, make it larger with the specified character, either before or after, using the given boolean value.
 Have the function return the new string and print it out*/
-function TextFunction(aText, aMaxValue, aCharacter, aBoolean) {
-    if (aText < aMaxValue) {
-        aText += aCharacter
+function TextFunction(aString, aMaxValue, aCharacter, aBoolean) {
+    if (aString.length < aMaxValue) {
+        aString += aCharacter
     }
 }
+console.log("Hello world!")
 printOut("Replace this with you answer!");
 printOut(newLine);
 
