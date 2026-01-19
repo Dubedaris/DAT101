@@ -137,23 +137,38 @@ If speed is missing, calculate speed. If time is missing, calculate time. If dis
 distance. If more than one parameter is missing, return NaN*/
 
 function Missing(aSpeed, aDistance, aTime) {
-    switch (null) {
-        case aSpeed:
-            aSpeed = (aDistance/aTime)
+    if(aSpeed === null) {
+        if(aDistance === null) {
+            return NaN;
+        } else if(aTime === null) {
+            return NaN;
+        } else {
+        aSpeed = (aDistance/aTime)
             printOut("When the distance is " + aDistance + " and the time is " + aTime)
-            printOut("the speed in meters per second is: " + aSpeed)
-            break;
-        case aDistance:
-            aDistance = (aSpeed*aTime)
+            printOut("the speed in meters per second is: " + aSpeed) 
+        }
+    } else if(aDistance === null) {
+        if(aSpeed === null) {
+            return NaN;
+        } else if(aTime === null) {
+            return NaN;
+        } else {
+        aDistance = (aSpeed*aTime)
             printOut("When the speed is " + aSpeed + " and the time is " + aTime)
             printOut("the distance in meters is: " + aDistance)
-            break;
-        case aTime:
-            aTime = (aDistance/aSpeed)
+        }
+    } else if(aTime === null) {
+        if(aSpeed === null) {
+            return NaN;
+        } else if(aDistance === null) {
+            return NaN;
+        } else {
+        aTime = (aDistance/aSpeed)
             printOut("When the distance is " + aDistance + " and the speed is " + aSpeed)
             printOut("the time in seconds is: " + aTime)
-            break;
-    } 
+        }
+    }
+ 
 }
 
 Missing(null,100,5);
@@ -162,8 +177,9 @@ Missing(30,null,10);
 printOut(newLine);
 Missing(25,50,null);
 printOut(newLine);
-//hjelp!
-Missing(null,100,null);
+if(isNaN(Missing(null,300,null))) {
+    printOut("Cannot calculate when missing two or more parameters");
+}
 printOut(newLine);
 
 
@@ -173,14 +189,20 @@ Create a function that takes four parameters and returns a result. Parameter one
 two: Value for the maximum size of the text string. Parameter three: Text character. Parameter four:
 Consecutive insertion of characters (boolean value). Take the text parameter; if it's smaller than the
 maximum, make it larger with the specified character, either before or after, using the given boolean value.
-Have the function return the new string and print it out*/
+Have the function return the new string and print it out*/ 
 function TextFunction(aString, aMaxValue, aCharacter, aBoolean) {
-    if (aString.length < aMaxValue) {
-        aString += aCharacter
+    while (aString.length < aMaxValue) {
+    if (aBoolean === true) {
+        aString += aCharacter;
+    } else {
+        aString = aCharacter + aString;
     }
+    } 
+        printOut(aString);
+    
 }
-console.log("Hello world!")
-printOut("Replace this with you answer!");
+TextFunction("Yeah boi", 20, "i", true);
+TextFunction("AH!", 10, "A", false);
 printOut(newLine);
 
 printOut("--- Part 9 ----------------------------------------------------------------------------------------------");
@@ -193,6 +215,10 @@ From mathematics, we have the following expression:
 25 + 26 + 27 + 28 + 29 + 30 = 31 + 32 + 33 + 34 + 35
 Create a function or functions that can test this expression for 200 lines. If the test fails, print out where the
 two sides are not equal and stop the loop. If all 200 lines are OK, print "Maths fun!".*/
+
+function mathsFun() {
+
+}
 
 
 printOut("Replace this with you answer!");

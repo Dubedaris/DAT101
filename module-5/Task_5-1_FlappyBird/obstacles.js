@@ -1,8 +1,9 @@
 "use strict";
 import { TSprite } from "libSprite";
+import { hero, EGameStatus } from "./FlappyBird.mjs";
 
-const easyFlyerGap = 450;
-const hardFlyerGap = 300;
+const easyFlyerGap = 150;
+const hardFlyerGap = 100;
 const minimumProtrusion = 30;
 
 
@@ -13,11 +14,25 @@ export class TObstacles {
     #spi;
 
     constructor (aSpcvs, aSPI) {
-        
+        const x = 600;
         this.#spi = aSPI;
-        this.#spObsBottom = new TSprite (aSpcvs, aSPI.obstacle, aSPI.background.width, 350)
+
+        const gap = Math.ceil(Math.random() * (easyFlyerGap-hardFlyerGap) + hardFlyerGap);
+        const minTop = -this.#spi.obstacle.height + minimumProtrusion;
+        const maxTop = -minimumProtrusion;
+        let top = Math.ceil(Math.random() * (maxTop-minTop) + minTop);
+        const minBottom = 400-minimumProtrusion;
+        let topWithGap = this.#spi.obstacle.height + top + gap;
+        if(topWithGap > minBottom) {
+            const adjustment = topWithGap - minBottom;
+            top -= adjustment;
+            topWithGap = this.#spi.obstacle.height + top + gap;
+        }
+
+
+        this.#spObsBottom = new TSprite (aSpcvs, aSPI.obstacle, x, topWithGap)
         this.#spObsBottom.index = 2;
-        this.#spObsTop = new TSprite (aSpcvs, aSPI.obstacle, aSPI.background.width, -100)
+        this.#spObsTop = new TSprite (aSpcvs, aSPI.obstacle, x, top)
         this.#spObsTop.index = 3;
     }
 
@@ -34,16 +49,13 @@ export class TObstacles {
     animate () {
         this.#spObsBottom.x--;
         this.#spObsTop.x--;
+        let hasCollided = hero.hasCollided(this.#spObsBottom) || hero.hasCollided(this.#spObsTop)
 
-        const rndmY = Math.ceil(Math.random() * (350-150) + 150)
-
-        /*if(this.#spObsBottom.x < 0-this.#spObsBottom.width) {
-            this.#spObsBottom.x = this.#spi.background.width;
-            this.#spObsTop.x = this.#spi.background.width;
-            this.#spObsBottom.y = rndmY;
-            this.#spObsTop.y = this.#spObsBottom.y-450;
-        }*/
-
-        
+        if(hasCollided) {
+            console.log("Hero has collided");
+            EGameStatus.state = EGameStatus.heroIsDead;
+            hero.animationSpeed = 0;
+            hero.flap();
+        } 
     }
 }

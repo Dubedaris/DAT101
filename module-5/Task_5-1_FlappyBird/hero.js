@@ -1,5 +1,6 @@
 "use strict";
 import { TSprite } from "libSprite";
+import { EGameStatus } from "./FlappyBird.mjs";
 
 export class THero extends TSprite{
     #gravity;
@@ -21,6 +22,9 @@ export class THero extends TSprite{
             if(this.rotation < 90) {
                 this.rotation = this.#speed*15;
             }
+        } else {
+            EGameStatus.state = EGameStatus.gameOver;
+            this.animationSpeed = 0;
         }
     }
 
