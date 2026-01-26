@@ -41,6 +41,10 @@ export class TObstacles {
         return this.#spObsBottom.x;
     }
 
+    get width() {
+        return this.#spObsBottom.width;
+    }
+
     draw() {
         this.#spObsBottom.draw();
         this.#spObsTop.draw();

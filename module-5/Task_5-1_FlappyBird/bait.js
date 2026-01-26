@@ -3,9 +3,11 @@ import { TSprite } from "libSprite";
 import { EGameStatus } from "./FlappyBird.mjs";
 import { TSineWave } from "lib2d";
 
+
 export class TBait extends TSprite{
     #speed;
     #wave;
+
 
     constructor(aSpcvs, aSPI) {
         super(aSpcvs, aSPI, 600, 100);
