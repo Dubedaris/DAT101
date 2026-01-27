@@ -13,11 +13,13 @@ export class TMenu {
     #sfCountDown;
     #sfRunning;
     #spScore;
+    #spGameOver;
     constructor(aSpcvs, aSPI) {
         this.#spTitle = new TSprite(aSpcvs, aSPI.flappyBird, aSPI.background.width / 2 - (aSPI.flappyBird.width / 2), 100);
         this.#spPlayBtn = new TSpriteButton(aSpcvs, aSPI.buttonPlay, aSPI.background.width / 2 - (aSPI.buttonPlay.width / 2), 200);
         this.#spCountDown = new TSpriteNumber(aSpcvs, aSPI.numberBig, aSPI.background.width / 2 - (aSPI.numberBig.width / 2), 200);
         this.#spScore = new TSpriteNumber(aSpcvs, aSPI.numberSmall, 10,10);
+        this.#spGameOver = new TSprite(aSpcvs, aSPI.gameOver, aSPI.background.width / 2 -(aSPI.gameOver.width / 2), 200 )
         this.#spScore.alpha = 0.6;
         this.#spPlayBtn.addEventListener("click", this.spPlayBtnClick.bind(this));
         this.#spCountDown.visible = false;
