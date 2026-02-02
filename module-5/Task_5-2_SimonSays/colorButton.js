@@ -1,16 +1,18 @@
 "use strict";
 import { TSpriteButton } from "libSprite";
 import { TPoint } from "lib2d";
+import { EOctave, ENoteName, TSoundWave } from "libSound";
 
 export class TColorButton extends TSpriteButton {
     #dst;
     #gameBoardCenter;
-
+    #sound;
 
     constructor(aSpcvs, aSPI, aGameBoardCenter) {
         super(aSpcvs, aSPI, aSPI.dst.x, aSPI.dst.y);
         this.#dst = aSPI.dst;
         this.#gameBoardCenter = aGameBoardCenter;
+        this.#sound = null;
     }
 
     isMouseOver(aMousePos) {
@@ -31,9 +33,33 @@ export class TColorButton extends TSpriteButton {
     onMouseDown() {
         // No need to call super
         this.index = 1;
+        if(this.#sound) {
+            this.#sound.play();
+        }
     }
 
     onMouseUp() {
         this.index = 0;
+        if(this.#sound) {
+            this.#sound.stop();
+        }
+    }
+
+    createSound(aIndex) {
+        let note = ENoteName.C;
+
+        switch(aIndex) {
+        case 1:
+            note = ENoteName.Eb
+            break
+        case 2:
+            note = ENoteName.G
+            break
+        case 3:
+            note = ENoteName.Bb
+            break}
+
+        this.#sound = new TSoundWave(EOctave.Octave5, note);
+        
     }
 }

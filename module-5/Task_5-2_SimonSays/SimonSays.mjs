@@ -30,6 +30,7 @@ function loadGame() {
   cvs.width = SpriteInfoList.Background.width;
   cvs.height = SpriteInfoList.Background.height;
   spcvs.onDraw = drawGame;
+ // EGameStatusType.type = EGameStatusType.Idle;
 }
 
 
