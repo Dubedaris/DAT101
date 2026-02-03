@@ -1,8 +1,9 @@
 "use strict";
-import { TSprite, TSpriteButton } from "libSprite";
+import { ESpriteNumberJustifyType, TSprite, TSpriteButton, TSpriteNumber } from "libSprite";
 import { TColorButton } from "./colorButton.js";
 import { TPoint, TCircle } from "lib2d";
 import { activateAudioContext } from "libSound";
+import { spawnButton } from "./SimonSays.mjs";
 
 export class TGameBoard extends TSprite {
     #colorButtons;
@@ -22,12 +23,25 @@ export class TGameBoard extends TSprite {
             new TColorButton(aSpcvs, aSPI.ButtonGreen, center),
             new TColorButton(aSpcvs, aSPI.ButtonYellow, center)
         ];
-        this.#spStartEnd = new TSpriteButton(aSpcvs, aSPI.ButtonStartEnd, aSPI.ButtonStartEnd.dst.x, aSPI.ButtonStartEnd.dst.y);
-        this.#spStartEnd.debug = true;
+        this.#spStartEnd = new TSpriteButton(aSpcvs, aSPI.ButtonStartEnd, aSPI.ButtonStartEnd.dst.x, aSPI.ButtonStartEnd.dst.y, TCircle);
         this.#spStartEnd.onClick = this.#startEndClick.bind(this);
         this.#disableColorButtons(true);
         this.#isSoundEnabled = false;
+
+        this.spRound = new TSpriteNumber(aSpcvs, aSPI.number, 405, 385)
+        this.spRound.justify = ESpriteNumberJustifyType.Right;
+        this.spRound.value = 0;
         
+    }
+
+    get colorButtons() {
+        return this.#colorButtons;
+    }
+
+    gameOver() {
+        this.#disableColorButtons(true);
+        this.#spStartEnd.index = 1;
+        this.#spStartEnd.hidden = false;
     }
 
     draw() {
@@ -36,7 +50,8 @@ export class TGameBoard extends TSprite {
             const colorButton = this.#colorButtons[i];
             colorButton.draw();
         }
-       this.#spStartEnd.draw();
+        this.spRound.draw();
+        this.#spStartEnd.draw();
     }
 
     #disableColorButtons(aDisable) {
@@ -57,5 +72,6 @@ export class TGameBoard extends TSprite {
                 colorButton.createSound(i);
             }
         }
+        spawnButton(); // this activates the sequence when we start the game. 
     }
 }

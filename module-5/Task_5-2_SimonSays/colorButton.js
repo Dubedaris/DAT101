@@ -2,6 +2,8 @@
 import { TSpriteButton } from "libSprite";
 import { TPoint } from "lib2d";
 import { EOctave, ENoteName, TSoundWave } from "libSound";
+import { checkUserInput } from "./sequence.js";
+import { EGameStatusType } from "./SimonSays.mjs";
 
 export class TColorButton extends TSpriteButton {
     #dst;
@@ -42,6 +44,9 @@ export class TColorButton extends TSpriteButton {
         this.index = 0;
         if(this.#sound) {
             this.#sound.stop();
+        }
+        if(EGameStatusType.state === EGameStatusType.Player) {
+        checkUserInput(this);
         }
     }
 
