@@ -1,18 +1,37 @@
 <!DOCTYPE html>
 <html lang="en" style="display: table; margin: auto; zoom: 1">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Task 3.2</title>
-  </head>
-  <body style="display: table-cell; vertical-align: middle">
-    <h2><label for="txtOut">Output from Task 3.2:</label></h2>
-    <div style="padding: 10px; min-width: 512px; border: darkblue thin solid; background-color: antiquewhite; font-family: 'Courier New', serif">
-      <span id="txtOut" style="white-space: nowrap"></span>
-    </div>
-    <ol>
-      <li>[Write the question here, and copy this for more questions]</li>
-      <p>[Write your answer here, and copy this for more answers]</p>
-    </ol>
-    <script type="module" src="./task_3-2.mjs" defer></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Task 3.2</title>
+</head>
+
+<body style="display: table-cell; vertical-align: middle">
+  <h2><label for="txtOut">Output from Task 3.2:</label></h2>
+  <div
+    style="padding: 10px; min-width: 512px; border: darkblue thin solid; background-color: antiquewhite; font-family: 'Courier New', serif">
+    <span id="txtOut" style="white-space: nowrap"></span>
+  </div>
+  <ol>
+    <li>In part 1, is it possible to solve the problem using a single "for" loop?</li>
+    <p>Yes, and I might have been able to figure it out on my own, but at least I have
+      seen it done on your github repository.
+    </p>
+    <li>2. In part 2, can we create what is known as an "infinite" loop within the condition of the "while" loop?
+    Describe what would or would not be necessary to achieve this. Provide a thorough explanation of
+    your answer.</li>
+    <p>On my way to finishing task 3-2 I had many endless loops. If you have a condition in your while loop that you can't fulfill, the loop will keep going until you close the program/browser/tab. 
+    </p>
+    <li>3. Discuss briefly how quickly or slowly a computer might be able to compute this, considering the
+    number of guesses and the time it takes. How does the program behave while it is guessing? Can
+    the program perform other tasks concurrently?</li>
+    <p>The computer computes things very fast. Early in task 3-2 we made the computer guess a number between 1 and 1 million, and on my computer it guessed 200k times in 2 milliseconds. In just a few seconds of endless loop it would probably compute things millions of times. While the endless loop is still going the program is unable to perform other tasks, which is why in a browser you have to close out the tab completely and try to fix the problem before running the live server again.</p>
+    <li>4. Explain the relationship between rows and columns in nested "for" loops. Can we, for instance,
+    change the order, considering rows to be innermost or columns to be innermost, or does this not
+    matter?</li>
+    <p>I'm not sure, because I got help with that task. I think you can change the order, but if you do you have to change how you write your code as well. I feel like I kinda understand it, but not in a way where I can explain it to someone else.</p>
+  </ol>
+  <script type="module" src="./task_3-2.mjs" defer></script>
+</body>
+
 </html>

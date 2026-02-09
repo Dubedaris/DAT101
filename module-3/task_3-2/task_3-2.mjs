@@ -115,8 +115,8 @@ let fourth = studentD;
 let fifth = studentE;
 
 
-for (let i=0; i < 5; i++) {
-    let temp; 
+for (let i = 0; i < 5; i++) {
+    let temp;
     if (first <= second) {
         temp = first
         first = second
@@ -149,32 +149,232 @@ printOut("--- Part 7 -----------------------------------------------------------
 ● 2 of a kind and 4 of a kind (tower)
 ● All the same (Yahtzee)*/
 
+//dice.match(/number/g) lets you look for values matching "number"
+//dice.match(/number/g).length is the number of matching values
+
 let d1 = Math.ceil(Math.random() * 6);
 let d2 = Math.ceil(Math.random() * 6);
 let d3 = Math.ceil(Math.random() * 6);
 let d4 = Math.ceil(Math.random() * 6);
 let d5 = Math.ceil(Math.random() * 6);
 let d6 = Math.ceil(Math.random() * 6);
-const dice = `${[d1, d2, d3, d4, d5, d6]}`;
-
-/*function diceThrow () {
-    d1 = Math.ceil(Math.random() * 6);
-    d2 = Math.ceil(Math.random() * 6);
-    d3 = Math.ceil(Math.random() * 6);
-    d4 = Math.ceil(Math.random() * 6);
-    d5 = Math.ceil(Math.random() * 6);
-    d6 = Math.ceil(Math.random() * 6);
-}*/
-
-//dice.match(/value/g)
+const dice = [d1, d2, d3, d4, d5, d6];
 
 let throwsFullStraight = 0;
 let throwsThreePairs = 0;
 let throwsTower = 0;
 let throwsYahtzee = 0;
 
-printOut(dice);
-console.log(dice.match(/3/g));
+let isFullStraight = false;
+let isThreePairs = false;
+let isTower = false;
+let isYahtzee = false;
+
+
+function throwDice() {
+    dice[0] = Math.ceil(Math.random() * 6);
+    dice[1] = Math.ceil(Math.random() * 6);
+    dice[2] = Math.ceil(Math.random() * 6);
+    dice[3] = Math.ceil(Math.random() * 6);
+    dice[4] = Math.ceil(Math.random() * 6);
+    dice[5] = Math.ceil(Math.random() * 6);
+}
+
+
+function fullStraight() {
+    throwDice();
+    throwsFullStraight = 1;
+
+    while (isFullStraight === false) {
+        const notAlike = new Set(dice);
+        if (notAlike.has(1) &&
+            notAlike.has(2) &&
+            notAlike.has(3) &&
+            notAlike.has(4) &&
+            notAlike.has(5) &&
+            notAlike.has(6)) {
+            isFullStraight = true;
+            printOut(dice.join(','));
+            printOut("Full straight! It took " + throwsFullStraight + " throws to get.")
+        } else {
+            throwsFullStraight++;
+            throwDice();
+        }
+    }
+}
+
+
+function threePairs() {
+
+    while (isThreePairs === false) {
+        let pairs = 0
+        throwDice();
+        throwsThreePairs++;
+
+        for (let i = 0; i < dice.length; i++) {
+
+            let checked = false;
+            for(let k = 0; k < i; k++) {
+                if(dice[k] === dice[i]) {
+                    checked = true;
+                    break;
+                }
+            } if (checked) continue;
+
+
+            let count = 0;
+
+            for (let j = i + 1; j < dice.length - 1; j++) {
+                if (dice[i] === dice[j + 1]) {
+                    count++;
+                }
+            }
+            if(count === 1) {
+                pairs++;
+            }
+        }
+        if(pairs === 3) {
+            isThreePairs = true;
+            printOut(dice.join(','));
+            printOut("Three pairs! It took " + throwsThreePairs + " throws to get.")
+        }
+
+    }
+
+
+}
+
+function towerTwo(aNumber1, aNumber2, aNumber3, aNumber4, aNumber5) {
+    if (dice.filter(number => number === aNumber1).length === 2) {
+        isTower = true;
+        printOut(dice.join(','));
+        printOut("Tower! It took " + throwsTower + " throws to get.")
+    } else if (dice.filter(number => number === aNumber2).length === 2) {
+        isTower = true;
+        printOut(dice.join(','));
+        printOut("Tower! It took " + throwsTower + " throws to get.")
+    } else if (dice.filter(number => number === aNumber3).length === 2) {
+        isTower = true;
+        printOut(dice.join(','));
+        printOut("Tower! It took " + throwsTower + " throws to get.")
+    } else if (dice.filter(number => number === aNumber4).length === 2) {
+        isTower = true;
+        printOut(dice.join(','));
+        printOut("Tower! It took " + throwsTower + " throws to get.")
+    } else if (dice.filter(number => number === aNumber5).length === 2) {
+        isTower = true;
+        printOut(dice.join(','));
+        printOut("Tower! It took " + throwsTower + " throws to get.")
+    } else {
+        throwsTower++;
+        throwDice();
+    }
+}
+
+function tower() {
+    throwDice();
+    throwsTower++;
+    while (isTower === false) {
+        if (dice.filter(number => number === 1).length === 4) {
+            towerTwo(2, 3, 4, 5, 6);
+        } else if (dice.filter(number => number === 2).length === 4) {
+            towerTwo(1, 3, 4, 5, 6);
+        } else if (dice.filter(number => number === 3).length === 4) {
+            towerTwo(1, 2, 4, 5, 6);
+        } else if (dice.filter(number => number === 4).length === 4) {
+            towerTwo(1, 2, 3, 5, 6);
+        } else if (dice.filter(number => number === 5).length === 4) {
+            towerTwo(1, 2, 3, 4, 6);
+        } else if (dice.filter(number => number === 6).length === 4) {
+            towerTwo(1, 2, 3, 4, 5);
+        } else {
+            throwsTower++;
+            throwDice();
+        }
+    }
+
+
+
+
+}
+
+
+function yahtzee() {
+    throwDice();
+    throwsYahtzee;
+
+    do {
+        const diceString = dice.join(', ');
+        if (diceString.match(/1/g)) {
+            if (diceString.match(/1/g).length === 6) {
+                isYahtzee = true;
+                printOut(dice.join(','));
+                printOut("Yahtzee! It took " + throwsYahtzee + " throws to get.");
+            } else {
+                throwsYahtzee++;
+                throwDice();
+            }
+        } else if (diceString.match(/2/g)) {
+            if (diceString.match(/2/g).length === 6) {
+                isYahtzee = true;
+                printOut(dice.join(','));
+                printOut("Yahtzee! It took " + throwsYahtzee + " throws to get.");
+            } else {
+                throwsYahtzee++;
+                throwDice();
+            }
+        } else if (diceString.match(/3/g)) {
+            if (diceString.match(/3/g).length === 6) {
+                isYahtzee = true;
+                printOut(dice.join(','));
+                printOut("Yahtzee! It took " + throwsYahtzee + " throws to get.");
+            } else {
+                throwsYahtzee++;
+                throwDice();
+            }
+        } else if (diceString.match(/4/g)) {
+            if (diceString.match(/4/g).length === 6) {
+                isYahtzee = true;
+                printOut(dice.join(','));
+                printOut("Yahtzee! It took " + throwsYahtzee + " throws to get.");
+            } else {
+                throwsYahtzee++;
+                throwDice();
+            }
+        } else if (diceString.match(/5/g)) {
+            if (diceString.match(/5/g).length === 6) {
+                isYahtzee = true;
+                printOut(dice.join(','));
+                printOut("Yahtzee! It took " + throwsYahtzee + " throws to get.");
+            } else {
+                throwsYahtzee++;
+                throwDice();
+            }
+        } else if (diceString.match(/6/g)) {
+            if (diceString.match(/6/g).length === 6) {
+                isYahtzee = true;
+                printOut(dice.join(','));
+                printOut("Yahtzee! It took " + throwsYahtzee + " throws to get.");
+            } else {
+                throwsYahtzee++;
+                throwDice();
+            }
+        }
+    } while (isYahtzee === false);
+}
+
+
+
+fullStraight();
+printOut(newLine);
+threePairs();
+printOut(newLine)
+tower();
+printOut(newLine);
+yahtzee();
+
+
+
 
 
 //It might be easier to do with string, because there are functions that can help you count instances of each value.
