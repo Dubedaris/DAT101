@@ -216,7 +216,11 @@ From mathematics, we have the following expression:
 Create a function or functions that can test this expression for 200 lines. If the test fails, print out where the
 two sides are not equal and stop the loop. If all 200 lines are OK, print "Maths fun!".*/
 
+
 function mathsFun() {
+    for(let i=0; i < 200; i++) {
+
+    }
 
 }
 
