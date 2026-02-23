@@ -87,7 +87,7 @@ You need to build this file with the following features:
  *    When user clicks a menu button (e.g., "Circle"), this object gets updated
  *    So when drawing a new shape, the app knows which settings to use
  */
-const newShapeType = { ShapeType: EShapeType.Line, FillColor: EColorType.Black, StrokeColor: EColorType.Black, StrokeSize: EStrokeSizeType.Thin };
+export const newShapeType = { ShapeType: EShapeType.Line, FillColor: EColorType.Black, StrokeColor: EColorType.Black, StrokeSize: EStrokeSizeType.Thin };
 
 /**
  * 🎮 CREATE THE MENU TOOLBAR
