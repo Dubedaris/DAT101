@@ -2,7 +2,7 @@
 import { printOut, newLine } from "../../common/script/utils.mjs";
 
 printOut("--- Part 1 ----------------------------------------------------------------------------------------------");
-/* Put your code below here!*/
+
 const dd = new Date()
 const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}
 function dato() {
@@ -12,7 +12,7 @@ printOut("Dagens dato: " + dato());
 printOut(newLine);
 
 printOut("--- Part 2 ----------------------------------------------------------------------------------------------");
-/* Put your code below here!*/
+
 const releaseDate = new Date(2026, 4, 14)
 const milliDag = 8.64e+7
 function countDown(aReleaseDate, aToday) {
@@ -27,7 +27,7 @@ printOut("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 printOut(newLine);
 
 printOut("--- Part 3 ----------------------------------------------------------------------------------------------");
-/* Put your code below here!*/
+
 let radiusValue = 5;
 function radius (aRadius) {
     return "If the radius is: " + radiusValue +
@@ -42,7 +42,7 @@ printOut(radius(radiusValue));
 printOut(newLine);
 
 printOut("--- Part 4 ----------------------------------------------------------------------------------------------");
-/* Put your code below here!*/
+
 let width = 5;
 let height = 6;
 function rectangle (aWidth, aHeight) {
@@ -58,7 +58,7 @@ printOut(rectangle(width, height));
 printOut(newLine);
 
 printOut("--- Part 5 ----------------------------------------------------------------------------------------------");
-/* Put your code below here!*/
+
 let Celsius = "Celsius";
 let Kelvin = "Kelvin" ;
 let Fahrenheit = "Fahrenheit";
@@ -90,7 +90,6 @@ conversion(100, Fahrenheit);
 printOut(newLine);
 
 printOut("--- Part 6 ----------------------------------------------------------------------------------------------");
-/* Put your code below here!*/
 
 function noVAT(aGrossAmount, aTaxGroup) {
     let VAT ;
@@ -130,8 +129,7 @@ noVAT(8008135, "goblins");
 printOut(newLine);
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
-/* Put your code below here!
-Create a function that takes 3 arguments and returns the following calculation:
+/* Create a function that takes 3 arguments and returns the following calculation:
 ● Speed = Distance / Time
 If speed is missing, calculate speed. If time is missing, calculate time. If distance is missing, calculate the
 distance. If more than one parameter is missing, return NaN*/
@@ -184,8 +182,7 @@ printOut(newLine);
 
 
 printOut("--- Part 8 ----------------------------------------------------------------------------------------------");
-/* Put your code below here!
-Create a function that takes four parameters and returns a result. Parameter one: A text string. Parameter
+/* Create a function that takes four parameters and returns a result. Parameter one: A text string. Parameter
 two: Value for the maximum size of the text string. Parameter three: Text character. Parameter four:
 Consecutive insertion of characters (boolean value). Take the text parameter; if it's smaller than the
 maximum, make it larger with the specified character, either before or after, using the given boolean value.
@@ -206,8 +203,7 @@ TextFunction("AH!", 10, "A", false);
 printOut(newLine);
 
 printOut("--- Part 9 ----------------------------------------------------------------------------------------------");
-/* Put your code below here!
-From mathematics, we have the following expression:
+/* From mathematics, we have the following expression:
 1 + 2 = 3
 4 + 5 + 6 = 7 + 8
 9 + 10 + 11 + 12 = 13 + 14 + 15
@@ -216,27 +212,49 @@ From mathematics, we have the following expression:
 Create a function or functions that can test this expression for 200 lines. If the test fails, print out where the
 two sides are not equal and stop the loop. If all 200 lines are OK, print "Maths fun!".*/
 
-//function with two for loops, one for each side of the equals sign
-
-function mathsFun() {
-    let left = [1,2];
-    let right = [3];
-
-    for(let i=0; i < 200; i++) {
-
+//Denne klarte jeg ikke før fristen! Kan hende jeg får det til hvis jeg prøver mer på egen hånd. 
+function Part9TestMathExpression(aLines) {
+  let currentNumber = 1;
+  for (let line = 1; line <= aLines; line++) {
+    let leftSum = 0;
+    let rightSum = 0;
+    // Calculate left side, one more number than right side
+    for (let i = 0; i < line + 1; i++) {
+      leftSum += currentNumber++;
     }
-
+    // Calculate right side
+    for (let i = 0; i < line; i++) {
+      rightSum += currentNumber++;
+    }
+    if (leftSum !== rightSum) {
+      printOut(`Test failed at line ${line}: Left sum (${leftSum}) != Right sum (${rightSum})`);
+      return;
+    }
+  }
+  printOut("Maths fun!");
 }
 
 
-printOut("Replace this with you answer!");
+printOut(Part9TestMathExpression(200));
 printOut(newLine);
 
 /* Task 10*/
 printOut("--- Part 10 ---------------------------------------------------------------------------------------------");
-/* Put your code below here!
-Recursive function. Create a function that calculates the factorial of a given number. Factorial of 5 = 5 * 4 *
+/* Recursive function. Create a function that calculates the factorial of a given number. Factorial of 5 = 5 * 4 *
 3 * 2 * 1. Factorial of 6 = 6 * 5 * 4 * 3 * 2 * 1. Etc.
 Have the function call itself to calculate the result and print the final answer.*/
-printOut("Replace this with you answer!");
+
+function recursive (aNumber) {
+    if(aNumber <= 0) {
+        return 1;
+    } else {
+        const result = aNumber * recursive(aNumber-1);
+        return result;
+    }
+}
+
+const factorialNumber = Math.ceil(Math.random() * 9);
+const factorialResult = recursive(factorialNumber)
+recursive(factorialNumber);
+printOut(`The factorial of ${factorialNumber} = ${factorialResult}`);
 printOut(newLine);
