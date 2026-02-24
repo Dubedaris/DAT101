@@ -1,26 +1,30 @@
 "use strict";
 import { printOut, newLine } from "../../common/script/utils.mjs";
 
-const accounts = {Normal: "Brukskonto", Savings: "Sparekonto", Credit: "Kredittkonto", Pension: "Pensjonskonto"};
+
+const accountTypes = {Normal: "Brukskonto", Savings: "Sparekonto", Credit: "Kredittkonto", Pension: "Pensjonskonto"};
 class TAccount {
-    constructor (type) {
+
+    constructor (aType) {
+       
         
     }
 }
 
 printOut("Account Types: ");
-printOut(accounts)
+printOut(accountTypes)
 printOut(newLine)
 
 printOut("--- Part 1 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut(accounts.Normal + ", " + accounts.Savings + ", " + accounts.Credit + ", " + accounts.Pension)
+printOut(`${accountTypes.Normal}, ${accountTypes.Savings}, ${accountTypes.Credit}, ${accountTypes.Pension}.`);
 
 printOut(newLine);
 
 printOut("--- Part 2 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+const myAccount = new TAccount (accountTypes.Normal);
+printOut(myAccount.toString());
 printOut(newLine);
 
 printOut("--- Part 3 ----------------------------------------------------------------------------------------------");
