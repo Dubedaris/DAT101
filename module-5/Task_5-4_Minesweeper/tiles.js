@@ -3,29 +3,88 @@ import { TSpriteCanvas, TSpriteButton } from "libSprite";
 import { TPoint } from "lib2d";
 import { SpriteInfoList, gameLevel } from "./Minesweeper.mjs";
 
+const mineInfoColours = ["blue", "green", "red", "darkblue", "brown", "cyan", "black", "grey"];
+
 let tiles = [];
+const ctx = document.getElementById("cvs").getContext("2d");
 
 export class TTile extends TSpriteButton {
-    #isMine;
+    #mine;
+    #col;
+    #row;
+    #neighbours;
+    #spcvs;
 
     constructor(aSpcvs, aSPI, aCol, aRow) {
         const pos = new TPoint(20, 133)
         pos.x += aSPI.width * aCol;
         pos.y += aSPI.height * aRow;
         super(aSpcvs, aSPI, pos.x, pos.y);
-        this.#isMine = false;
+        this.#mine = false;
+        this.#col = aCol;
+        this.#row = aRow;
+        this.#neighbours = null;
+        this.mineInfo = 0;
+        this.#spcvs = aSpcvs;
     }
 
     get isMine() {
-        return this.#isMine;
+        return this.#mine;
     }
 
     set isMine(aValue) {
-        this.#isMine = aValue;
+        this.#mine = aValue;
+        this.mineInfo = 0;
+        this.#getNeighbours();
+        for (let i = 0; i < this.#neighbours.length; i++) {
+            const tile = this.#neighbours[i];
+            if (tile.isMine === false) {
+                tile.mineInfo++;
+            }
+        }
     }
 
     get open() {
         return this.index === 2;
+    }
+
+    draw() {
+        super.draw();
+        if (this.open && this.mineInfo) {
+            ctx.font = "24px Consolas";
+            ctx.fillStyle = mineInfoColours[this.mineInfo - 1];
+            ctx.fillText(this.mineInfo, this.x + 18, this.y + 34);
+        }
+    }
+
+    #getNeighbours() {
+        if (this.#neighbours !== null) {
+            return;
+        }
+        let colFrom = this.#col - 1;
+        let colTo = this.#col + 1;
+        let rowFrom = this.#row - 1;
+        let rowTo = this.#row + 1;
+
+        if (colFrom < 0) {
+            colFrom = 0;
+        } if (colTo >= gameLevel.Tiles.Col) {
+            colTo = gameLevel.Tiles.Col - 1;
+        } if (rowFrom < 0) {
+            rowFrom = 0;
+        } if (rowTo >= gameLevel.Tiles.Row) {
+            rowTo = gameLevel.Tiles.Row - 1;
+        } // edgeCases END
+
+        this.#neighbours = [];
+        for (let colIndex = colFrom; colIndex <= colTo; colIndex++) {
+            for (let rowIndex = rowFrom; rowIndex <= rowTo; rowIndex++) {
+                const tile = tiles[colIndex][rowIndex];
+                if (this !== tile) {
+                    this.#neighbours.push(tile);
+                }
+            }
+        }
     }
 
     //Override functions
@@ -35,7 +94,7 @@ export class TTile extends TSpriteButton {
     }
 
     onMouseUp(aEvent) {
-        this.index = 2;
+        this.open = true;
         super.onMouseUp(aEvent);
     }
 
@@ -48,22 +107,40 @@ export class TTile extends TSpriteButton {
 
     }
 
+    set open(_aValue) {
+        if (this.isMine) {
+            this.index = 5;
+        } else {
+            this.index = 2;
+        }
+
+        if (this.mineInfo === 0) {
+            this.#getNeighbours();
+            for (let i = 0; i < this.#neighbours.length; i++) {
+                const tile = this.#neighbours[i];
+                if (tile.open === false) {
+                    tile.open = true;
+                }
+            }
+        }
+    }
+
 } //TTile END
 
 export function createMines() {
-    mineCount = 0;
-    colCount = gameLevel.Tiles.Col;
-    rowCount = gameLevel.Tiles.Row;
+    let mineCount = 0;
+    const colCount = gameLevel.Tiles.Col;
+    const rowCount = gameLevel.Tiles.Row;
 
     do {
         const col = Math.floor(Math.random() * colCount);
         const row = Math.floor(Math.random() * rowCount);
         const tile = tiles[col][row];
-        if(tile.isMine === false) {
+        if (tile.isMine === false) {
             tile.isMine = true;
             mineCount++;
-        } 
-    } while (mineCount <= gameLevel.Mines)
+        }
+    } while (mineCount < gameLevel.Mines)
 }
 
 
@@ -73,40 +150,14 @@ export function newTiles(aSpcvs, aSPI) {
     const colCount = glTiles.Col;
     const rowCount = glTiles.Row;
 
-    switch (gameLevel.caption) {
-        case "Level 1": //100 tiles - 5 mines
-            tiles = [];
-            for (let col = 0; col < colCount; col++) {
-                const rows = []
-                for (let row = 0; row < rowCount; row++) {
-                    const newTile = new TTile(aSpcvs, aSPI, col, row)
-                    rows.push(newTile);
-                }
-                tiles.push(rows);
-            }
-            break;
-        case "Level 2": // 225 tiles - 20 mines
-            tiles = [];
-            for (let col = 0; col < colCount; col++) {
-                const rows = []
-                for (let row = 0; row < rowCount; row++) {
-                    const newTile = new TTile(aSpcvs, aSPI, col, row)
-                    rows.push(newTile);
-                }
-                tiles.push(rows);
-            }
-            break;
-        case "Level 3": // 600 tiles - 99 mines
-            tiles = [];
-            for (let col = 0; col < colCount; col++) {
-                const rows = []
-                for (let row = 0; row < rowCount; row++) {
-                    const newTile = new TTile(aSpcvs, aSPI, col, row)
-                    rows.push(newTile);
-                }
-                tiles.push(rows);
-            }
-            break;
+    tiles = [];
+    for (let col = 0; col < colCount; col++) {
+        const rows = []
+        for (let row = 0; row < rowCount; row++) {
+            const newTile = new TTile(aSpcvs, aSPI, col, row)
+            rows.push(newTile);
+        }
+        tiles.push(rows);
     }
 }
 
