@@ -57,10 +57,14 @@ class TAccount {
         if (aCurrency === undefined) {
             aCurrency = currencyTypes.NOK;
         }
+        this.#currencyType = aCurrency;
+        const denomination = this.#currencyType.denomination;
         this.#withdrawCount = 0;
         this.#balance += aAmount;
-        this.#currencyType = aCurrency
-        printOut(aAmount + this.#currencyType.denomination + " deposited. The new balance is: " + this.#balance.toFixed(2) + this.#currencyType.denomination);
+
+        printOut(aAmount + denomination + " deposited.");
+        
+        printOut("The new balance is: " + this.getBalance());
     }
 
     withdraw(aAmount, aCurrency) {

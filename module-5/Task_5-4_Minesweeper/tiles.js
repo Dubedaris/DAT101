@@ -1,7 +1,7 @@
 "use strict";
-import { TSpriteCanvas, TSpriteButton } from "libSprite";
+import { TSpriteButton } from "libSprite";
 import { TPoint } from "lib2d";
-import { SpriteInfoList, gameLevel } from "./Minesweeper.mjs";
+import { gameLevel } from "./Minesweeper.mjs";
 
 const mineInfoColours = ["blue", "green", "red", "darkblue", "brown", "cyan", "black", "grey"];
 
@@ -13,7 +13,6 @@ export class TTile extends TSpriteButton {
     #col;
     #row;
     #neighbours;
-    #spcvs;
 
     constructor(aSpcvs, aSPI, aCol, aRow) {
         const pos = new TPoint(20, 133)
@@ -25,7 +24,6 @@ export class TTile extends TSpriteButton {
         this.#row = aRow;
         this.#neighbours = null;
         this.mineInfo = 0;
-        this.#spcvs = aSpcvs;
     }
 
     get isMine() {
@@ -89,18 +87,31 @@ export class TTile extends TSpriteButton {
 
     //Override functions
     onMouseDown(aEvent) {
-        this.index = 1;
+        if(aEvent.button === 0 && this.index === 0) {
+            this.index = 1;
+        } else if (aEvent.button === 2) {
+            if(this.index === 0) {
+                this.index = 3;
+            } else if (this.index === 3) {
+                this.index = 0;
+            } // this.index = 3 - this.index; <- this is an easy way to toggle!
+        } 
         super.onMouseDown(aEvent);
     }
 
+    
+
     onMouseUp(aEvent) {
+        if(aEvent.button === 2 || this.index === 3) {
+            return;
+        }
         this.open = true;
         super.onMouseUp(aEvent);
     }
 
 
     onMouseLeave(aEvent) {
-        if (!this.open) {
+        if (this.index === 1) {
             this.index = 0;
             super.onMouseLeave(aEvent);
         }
