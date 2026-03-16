@@ -1,7 +1,8 @@
 "use strict";
 import { TSpriteNumber, TSpriteButton, ESpriteNumberJustifyType } from "libSprite";
 import { TPoint } from "lib2d";
-import { gameLevel } from "./Minesweeper.mjs";
+import { gameLevel, newGame } from "./Minesweeper.mjs";
+import { gameIsOver, gameIsWon } from "./tiles.js";
 
 
 export class TGameInfo {
@@ -23,7 +24,31 @@ export class TGameInfo {
         this.#timer.digits = 3;
         pos.x = (aSpcvs.width/2) - (aSPI.ButtonSmiley.width / 2);
         this.#smiley = new TSpriteButton(aSpcvs, aSPI.ButtonSmiley, pos.x, pos.y);
+        this.#smiley.addEventListener("mousedown", this.#smileyMouseDown.bind(this));
+        this.#smiley.addEventListener("mouseup", this.#smileyMouseUp.bind(this));
         this.#hndTimer = setInterval(this.onTime.bind(this), 1000);
+    }
+
+    #smileyMouseDown() {
+        this.#smiley.index++;
+    }
+
+    #smileyMouseUp() {
+        this.#smiley.index--;
+        newGame();
+    }
+
+
+    get flagCount() {
+        return this.#countDown.value;
+    }
+
+    set flagCount(aValue) {
+        this.#countDown.value = aValue;
+    }
+    
+    smileyIndex(aIndex) {
+        this.#smiley.index = aIndex;
     }
 
     draw() {
@@ -34,7 +59,12 @@ export class TGameInfo {
 
     onTime() {
         this.#timer.value++;
+        if(gameIsOver || gameIsWon) {
+            clearInterval(this.#hndTimer);
+        }
     }
+
+
 }
 
 

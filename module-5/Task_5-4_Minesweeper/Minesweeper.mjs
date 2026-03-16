@@ -2,7 +2,7 @@
 import { TPoint } from "lib2d";
 import { TSpriteCanvas } from "libSprite";
 import { TGameBoard } from "./GameBoard.mjs";
-import { newTiles, drawTiles, createMines } from "./tiles.js";
+import { newTiles, drawTiles, createMines, gameIsWon } from "./tiles.js";
 import { TGameInfo } from "./GameInfo.js";
 
 //-----------------------------------------------------------------------------------------
@@ -35,7 +35,7 @@ const cvs = document.getElementById("cvs");
 const spcvs = new TSpriteCanvas(cvs);
 const selectDifficulty = document.getElementById("selectDifficulty");
 let gameBoard = null;
-let gameInfo = null;
+export let gameInfo = null;
 
 //-----------------------------------------------------------------------------------------
 //----------- functions -------------------------------------------------------------------

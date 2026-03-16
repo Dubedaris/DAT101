@@ -1,12 +1,15 @@
 "use strict";
 import { TSpriteButton } from "libSprite";
 import { TPoint } from "lib2d";
-import { gameLevel } from "./Minesweeper.mjs";
+import { gameLevel, gameInfo } from "./Minesweeper.mjs";
 
 const mineInfoColours = ["blue", "green", "red", "darkblue", "brown", "cyan", "black", "grey"];
 
 let tiles = [];
 const ctx = document.getElementById("cvs").getContext("2d");
+export let gameIsOver = false;
+export let gameIsWon = false;
+export let openCount = 0;
 
 export class TTile extends TSpriteButton {
     #mine;
@@ -87,23 +90,45 @@ export class TTile extends TSpriteButton {
 
     //Override functions
     onMouseDown(aEvent) {
-        if(aEvent.button === 0 && this.index === 0) {
+        if (gameIsOver) {
+            return;
+        }
+        if (aEvent.button === 0 && this.index === 0) {
             this.index = 1;
+            gameInfo.smileyIndex(1);
         } else if (aEvent.button === 2) {
-            if(this.index === 0) {
+            if (this.index === 0) {
                 this.index = 3;
+                if (gameInfo.flagCount > 0) {
+                    gameInfo.flagCount--;
+                } else {
+                    this.index = 0;
+                }
             } else if (this.index === 3) {
                 this.index = 0;
+                if (gameInfo.flagCount < gameLevel.Mines) {
+                    gameInfo.flagCount++;
+                } else {
+                    this.index = 0;
+                }
             } // this.index = 3 - this.index; <- this is an easy way to toggle!
-        } 
+        }
         super.onMouseDown(aEvent);
     }
 
-    
+
 
     onMouseUp(aEvent) {
-        if(aEvent.button === 2 || this.index === 3) {
+        if (gameIsOver) {
             return;
+        }
+        if (aEvent.button === 2 || this.index === 3) {
+            return;
+        }
+        if (this.isMine) {
+            gameInfo.smileyIndex(2);
+        } else {
+            gameInfo.smileyIndex(0);
         }
         this.open = true;
         super.onMouseUp(aEvent);
@@ -111,18 +136,29 @@ export class TTile extends TSpriteButton {
 
 
     onMouseLeave(aEvent) {
+        if (gameIsOver) {
+            return;
+        }
         if (this.index === 1) {
             this.index = 0;
+            gameInfo.smileyIndex(0);
             super.onMouseLeave(aEvent);
         }
-
     }
 
     set open(_aValue) {
         if (this.isMine) {
-            this.index = 5;
+            gameOver();
+            this.index = 4; // Game over!
+            return;
         } else {
             this.index = 2;
+            openCount++;
+            if (openCount === gameLevel.Tiles.Col * gameLevel.Tiles.Row - gameLevel.Mines) {
+                console.log(openCount)
+                gameInfo.smileyIndex(4)
+                gameIsWon = true;
+            }
         }
 
         if (this.mineInfo === 0) {
@@ -137,6 +173,30 @@ export class TTile extends TSpriteButton {
     }
 
 } //TTile END
+
+
+
+export function gameOver() {
+    //gameInfo.smileyIndex(2);
+    gameIsOver = true;
+    for (let colIndex = 0; colIndex < gameLevel.Tiles.Col; colIndex++) {
+        const cols = tiles[colIndex];
+        for (let rowIndex = 0; rowIndex < gameLevel.Tiles.Row; rowIndex++) {
+            const tile = cols[rowIndex];
+            if (tile.isMine) {
+                if (tile.index === 3) {
+                    tile.index = 7;
+                } else {
+                    tile.index = 5;
+                }
+            } else if (tile.index === 3) {
+                tile.index = 6;
+            } else {
+                tile.index = 2;
+            }
+        }
+    }
+}
 
 export function createMines() {
     let mineCount = 0;
@@ -156,11 +216,14 @@ export function createMines() {
 
 
 export function newTiles(aSpcvs, aSPI) {
+    gameIsWon = false;
+    openCount = 0;
     console.log(gameLevel);
     const glTiles = gameLevel.Tiles;
     const colCount = glTiles.Col;
     const rowCount = glTiles.Row;
 
+    gameIsOver = false;
     tiles = [];
     for (let col = 0; col < colCount; col++) {
         const rows = []
