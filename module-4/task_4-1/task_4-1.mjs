@@ -57,14 +57,15 @@ class TAccount {
         if (aCurrency === undefined) {
             aCurrency = currencyTypes.NOK;
         }
-        this.#currencyType = aCurrency;
+        const exchange = this.#currencyConvert(aCurrency);
         const denomination = this.#currencyType.denomination;
+        const newAmount = aAmount/exchange;
+        const name = aCurrency.name;
         this.#withdrawCount = 0;
-        this.#balance += aAmount;
+        this.#balance += newAmount;
 
-        printOut(aAmount + denomination + " deposited.");
-        
-        printOut("The new balance is: " + this.getBalance());
+        printOut(aAmount + " " + name + " deposited.");
+        printOut("The new balance is: " + this.#balance.toFixed(2) + denomination);
     }
 
     withdraw(aAmount, aCurrency) {
@@ -72,26 +73,28 @@ class TAccount {
             aCurrency = currencyTypes.NOK;
         }
         const denomination = this.#currencyType.denomination;
-        this.#currencyType = aCurrency;
+        const name = aCurrency.name;
+        const exchange = this.#currencyConvert(aCurrency);
+        const newAmount = aAmount/exchange;
         switch (this.#type) {
             case accountTypes.Normal:
                 this.#withdrawCount = 0;
-                this.#balance -= aAmount;
-                printOut(aAmount + denomination + " withdrawn. The new balance is: " + this.#balance.toFixed(2) + denomination);
+                this.#balance -= newAmount;
+                printOut(aAmount + " " + name + " withdrawn. The new balance is: " + this.#balance.toFixed(2) + denomination);
                 break;
             case accountTypes.Savings:
                 if (this.#withdrawCount >= 3) {
                     printOut("You can not withdraw money from " + this.#type + " more than 3 times.");
                 } else {
-                    this.#balance -= aAmount;
+                    this.#balance -= newAmount;
                     this.#withdrawCount ++;
-                    printOut(aAmount + denomination + " withdrawn. The new balance is: " + this.#balance.toFixed(2) + denomination);
+                    printOut(aAmount + " " + name + " withdrawn. The new balance is: " + this.#balance.toFixed(2) + denomination);
                 }
                 break;
             case accountTypes.Credit:
                 this.#withdrawCount = 0;
-                this.#balance -= aAmount;
-                printOut(aAmount + denomination + " withdrawn. The new balance is: " + this.#balance.toFixed(2) + denomination);
+                this.#balance -= newAmount;
+                printOut(aAmount + " " + name + " withdrawn. The new balance is: " + this.#balance.toFixed(2) + denomination);
                 break;
             case accountTypes.Pension:
                 this.#withdrawCount = 0;
@@ -169,6 +172,10 @@ printOut(newLine);
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-//FIKS!!
-myAccount.deposit(12, currencyTypes.USD)
+myAccount.deposit(12, currencyTypes.USD);
+myAccount.withdraw(10, currencyTypes.GBP);
+myAccount.setCurrencyType(currencyTypes.CAD);
+myAccount.setCurrencyType(currencyTypes.INR);
+myAccount.getBalance();
+myAccount.withdraw(150.1585, currencyTypes.SEK);
 printOut(newLine);
