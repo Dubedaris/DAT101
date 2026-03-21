@@ -7,9 +7,9 @@ array and print all the elements in the array.
 ○ Hint: Look at the learning outcomes to find the solutions to the task.
 
 Put your code below here!*/
-const hardCodedArray = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+const hardCodedArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 
-for(let i= 0; i < hardCodedArray.length; i++) {
+for (let i = 0; i < hardCodedArray.length; i++) {
     printOut(i);
 }
 
@@ -36,8 +36,8 @@ let textPart3 = "Hei på deg, hvordan har du det?";
 
 const textConverted = textPart3.split(" ");
 
-for(let i=0; i < textConverted.length; i++) {
-    printOut("length: " + textConverted[i].length + ", index: " + i +  ", word: " + textConverted[i].toString());
+for (let i = 0; i < textConverted.length; i++) {
+    printOut("length: " + textConverted[i].length + ", index: " + i + ", word: " + textConverted[i].toString());
 }
 //jeg skjønte ikke dette helt! skulle jeg ha index+1 for å finne word number? Jeg fikk det ikke til, får bare length
 printOut(newLine);
@@ -53,12 +53,12 @@ the element exists or not in the array.
 Put your code below here!*/
 
 let girlsArray = ["Anne", "Inger", "Kari", "Marit", "Ingrid", "Liv", "Eva", "Berit", "Astrid",
-"Bjørg", "Hilde", "Anna", "Solveig", "Marianne", "Randi", "Ida", "Nina", "Maria", "Elisabeth", "Kristin"]
+    "Bjørg", "Hilde", "Anna", "Solveig", "Marianne", "Randi", "Ida", "Nina", "Maria", "Elisabeth", "Kristin"]
 
 function removeName(aArray, aName) {
     const index = aArray.indexOf(aName);
     printOut("Name chosen: " + aName + newLine + "...");
-    if(aArray.includes(aName)) {
+    if (aArray.includes(aName)) {
         printOut(aName + " found! Removing name from array.")
         aArray.splice(index, 1)
     } else {
@@ -81,8 +81,8 @@ properties and methods 😃
 Put your code below here!*/
 
 let boysArray = ["Jakob", "Lucas", "Emil", "Oskar", "Oliver", "William", "Filip", "Noah",
-"Elias", "Isak", "Henrik", "Aksel", "Kasper", "Mathias", "Jonas", "Tobias", "Liam", "Håkon", "Theodor",
-"Magnus"]
+    "Elias", "Isak", "Henrik", "Aksel", "Kasper", "Mathias", "Jonas", "Tobias", "Liam", "Håkon", "Theodor",
+    "Magnus"]
 
 const girlsAndBoys = girlsArray.concat(boysArray);
 
@@ -99,16 +99,29 @@ in the list.
 Put your code below here!*/
 
 class TBook {
+    #title;
+    #author;
+    #isbn;
 
     constructor(aTitle, aAuthor, aISBN) {
-
+        this.#title = aTitle;
+        this.#author = aAuthor;
+        this.#isbn = aISBN;
     }
 
     toString() {
-        
+        return `Title: ${this.#title}. Author: ${this.#author}. ISBN: ${this.#isbn}`;
     }
 }
-printOut("Replace this with you answer!");
+
+const book1 = new TBook("Hamnet", "Maggie O'Farrell", "978-1472223791");
+const book2 = new TBook("The Hobbit", "J.R.R. Tolkien", "9780008779900");
+const book3 = new TBook("Serafin og hans makeløse mesterverk", "Philippe Fix", "9788205336698");
+const bookArray = [book1, book2, book3];
+
+for(let i = 0; i < bookArray.length; i++) {
+    printOut(bookArray[i].toString());
+}
 printOut(newLine);
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
@@ -120,7 +133,35 @@ Create a loop that traverses this "key" array and prints all the elements that e
 ○ Hint: Use W3Schools as I have shown you, here you see good examples of exactly this!
 
 Put your code below here!*/
-printOut("Replace this with you answer!");
+
+const EWeekDays = {
+    WeekDay1: { value: 0x01, name: "Monday" },
+    WeekDay2: { value: 0x02, name: "Tuesday" },
+    WeekDay3: { value: 0x04, name: "Wednesday" },
+    WeekDay4: { value: 0x08, name: "Thursday" },
+    WeekDay5: { value: 0x10, name: "Friday" },
+    WeekDay6: { value: 0x20, name: "Saturday" },
+    WeekDay7: { value: 0x40, name: "Sunday" },
+
+    Workdays: {
+        value: 0x01 + 0x02 + 0x04 + 0x08 + 0x10,
+        name: "Workdays"
+    },
+
+    Weekends: {
+        value: 0x20 + 0x40,
+        name: "Weekend"
+    },
+};
+
+const keys = Object.keys(EWeekDays);
+
+for(const key of keys) {
+    const day = EWeekDays[key];
+    printOut(`Value: ${day.value}, name: ${day.name}`);
+}
+
+
 printOut(newLine);
 
 printOut("--- Part 8 ----------------------------------------------------------------------------------------------");
@@ -129,7 +170,29 @@ and descending order. To get full credit for this task, it must be solved with "
 use in the .sort(...) method of this array.
 
 Put your code below here!*/
-printOut("Replace this with you answer!");
+
+const randomArray = [];
+
+for(let i = 0; i < 35; i++) {
+    const random = Math.ceil(Math.random()*20);
+    randomArray.push(random);
+}
+
+function arraySorted(a, b) {
+    return a-b;
+}
+
+function arrayReversed(a, b) {
+    return b-a;
+}
+const randomArraySorted = [...randomArray].sort(arraySorted);
+const randomArrayReversed = [...randomArray].sort(arrayReversed);
+
+printOut("Random array: " + randomArray);
+printOut("Sorted array: " + randomArraySorted);
+printOut("Reversed array: " + randomArrayReversed);
+
+
 printOut(newLine);
 
 printOut("--- Part 9 ----------------------------------------------------------------------------------------------");
@@ -139,7 +202,43 @@ print the most frequent ones first, and if there are multiple numbers where the 
 it should again be sorted from the smallest to the largest number.
 
 Put your code below here!*/
-printOut("Replace this with you answer!");
+
+const frequency = {};
+for(let i = 0; i < randomArray.length; i++){
+  if(frequency[randomArray[i]]){
+    frequency[randomArray[i]] += 1;
+  }else{
+    frequency[randomArray[i]] = 1;
+  }
+}
+let part9Text1 = "Number Frequencies:" + newLine;
+for(const number in frequency){
+  part9Text1 += `Number ${number} occurs ${frequency[number]} times.` + newLine;
+}
+printOut(part9Text1);
+printOut(newLine);
+
+function frequencySort(a, b){
+  if(frequency[b] === frequency[a]){
+    return a - b; // Ascending order for numbers
+  }
+  return frequency[b] - frequency[a]; // Descending order for frequency
+}
+
+const frequencyKeys = Object.keys(frequency);
+frequencyKeys.sort(frequencySort);
+const frequencyValues = [];
+for(let i = 0; i < frequencyKeys.length; i++){
+  const value = parseInt(frequencyKeys[i]);
+  frequencyValues.push(value);
+}
+let part9Text2 = "Frequencies Sorted:" + newLine;
+for(let i = 0; i < frequencyValues.length; i++){
+  const num = frequencyValues[i];
+  part9Text2 += `Number ${num} occurs ${frequency[num]} times.` + newLine;
+}
+printOut(part9Text2);
+
 printOut(newLine);
 
 /* Task 10*/
@@ -151,5 +250,23 @@ column the "cell" is in. Then create two new sets of "for" loops to print the ar
 columns, you write the "cell" value.
 
 Put your code below here!*/
-printOut("Replace this with you answer!");
+
+const rows = 5;
+const cols = 9;
+const grid = [];
+for(let i = 0; i < rows; i++) {
+    const cells = [];
+    for(let j = 0; j < cols; j++) {
+        cells.push(`Row ${i + 1}, Col ${j + 1}`);
+    }
+    grid.push(cells);
+}
+let gridText = "";
+for(let i = 0; i < rows; i++){
+  for(let j = 0; j < cols; j++){
+    gridText += grid[i][j] + "&nbsp;&nbsp;&nbsp;";
+  }
+  gridText += newLine;
+}
+printOut(gridText);
 printOut(newLine);

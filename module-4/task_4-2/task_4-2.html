@@ -32,16 +32,24 @@
       "Thursday", how would it ideally look? (I will choose the best answer to this task and reward it with
       pizza in the cafeteria right after New Year. Remember to mark in your submission if you want to
       participate in the competition!)</li>
-    <p>[Write your answer here, and copy this for more answers]</p>
+    <p>I'm not sure about exactly why we use the value attribute, but I suppose it's a way to assign importance 
+      to the different days and sets of days. If we were to add WorkoutDays as well it would probably look
+      like this:
+      WorkoutDays: {
+        value: 0x01 + 0x04 + 0x08,
+        name: "WorkoutDays"
+    },</p>
     <li>In task 8, we will use a "callback" routine when sorting. Explain how such a "callback" routine works.</li>
-    <p>[Write your answer here, and copy this for more answers]</p>
+    <p>A callback routine works by using a function as a sort of parameter for a different function. When we run that function it will simultaneously run the callback function as well. </p>
     <li>What happens in the sorting routines you have created? Try to explain how the array can figure out
       if an element should come before or after another. The best way to answer this is to actually print
       both parameters each time the sorting routine runs.</li>
-    <p>[Write your answer here, and copy this for more answers]</p>
+    <p>This one I didn't do at all, so I am unable to explain </p>
     <li>In task 10, we will create an array with rows and columns. Explain what the first element of the array
       contains.</li>
-    <p>[Write your answer here, and copy this for more answers]</p>
+    <p>The first element of the array contains a row and column placement, 1,1 in this case. It will be 
+      placed in the top left of the grid.
+    </p>
   </ol>
   <script type="module" src="./task_4-2.mjs" defer></script>
 </body>
