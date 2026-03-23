@@ -1,7 +1,7 @@
 "use strict";
 import { spcvs, SpriteInfoList, newGame } from "./Mastermind.mjs";
-import { MastermindBoard } from "./MastermindBoard.mjs";
 import { TSprite, TSpriteButtonHaptic } from "libSprite";
+import { checkAnswers } from "./checkAnswers.js";
 
 /*
 1. make background
@@ -28,7 +28,11 @@ export class TMenu {
     }
 
     #checkAnswer() {
-        // check player answer
+        checkAnswers();
+    }
+
+    enableCheckAnswer() {
+        this.#btnCheckAnswer.disabled = false;
     }
 
     #startNewGame() {

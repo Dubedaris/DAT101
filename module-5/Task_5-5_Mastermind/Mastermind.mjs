@@ -45,30 +45,55 @@ import { MastermindBoard } from "./MastermindBoard.mjs";
 
 
 export const SpriteInfoList = {
-  Board:              { x: 640, y:   0, width: 441, height: 640, count: 1 },
-  ButtonNewGame:      { x:   0, y:  45, width: 160, height:  45, count: 4 },
-  ButtonCheckAnswer:  { x:   0, y:   0, width: 160, height:  45, count: 4 },
-  ButtonCheat:        { x:   0, y: 139, width:  75, height:  49, count: 4 },
-  PanelHideAnswer:    { x:   0, y:  90, width: 186, height:  49, count: 1 },
-  ColorPicker:        { x:   0, y: 200, width:  34, height:  34, count: 8 },
-  ColorHint:          { x:   0, y: 250, width:  19, height:  18, count: 3 },
+  Board: { x: 640, y: 0, width: 441, height: 640, count: 1 },
+  ButtonNewGame: { x: 0, y: 45, width: 160, height: 45, count: 4 },
+  ButtonCheckAnswer: { x: 0, y: 0, width: 160, height: 45, count: 4 },
+  ButtonCheat: { x: 0, y: 139, width: 75, height: 49, count: 4 },
+  PanelHideAnswer: { x: 0, y: 90, width: 186, height: 49, count: 1 },
+  ColorPicker: { x: 0, y: 200, width: 34, height: 34, count: 8 },
+  ColorHint: { x: 0, y: 250, width: 19, height: 18, count: 3 },
 };
 
 // Grabbing the canvas from the HTML and passing it to our shiny sprite engine! ✨
 const cvs = document.getElementById("cvs");
 export const spcvs = new TSpriteCanvas(cvs);
 let gameBoard = null;
-let menu = null;
+export let menu = null;
 export let colors = [];
+export let computerAnswer = [];
 
 
 // --------------------------------------------------------------------------------------------------------------------
 // ⚙️ 3. Game Functions
 // --------------------------------------------------------------------------------------------------------------------
+function compareAnswers() {
+  //computerAnswer.y = 52
+  //computerAnswer.x = 93 - 138 - 183 - 228
+  
+}
+
+function createComputerAnswer() {
+  const colorList = SpriteInfoList.ColorPicker.count;
+  for (let i = 0; i < 4; i++) {
+    const colorIndex = Math.floor(Math.random() * colorList);
+    const x = MastermindBoard.ComputerAnswer[i].x;
+    const y = MastermindBoard.ComputerAnswer[i].y;
+    const spColor = new TSprite(spcvs, SpriteInfoList.ColorPicker, x, y);
+    spColor.index = colorIndex;
+    computerAnswer.push(spColor);
+  }
+}
+
+function drawComputerAnswer() {
+  for (let i = 0; i < computerAnswer.length; i++) {
+    const CC = computerAnswer[i];
+    CC.draw();
+  }
+}
 
 function createColorPicker() {
   const keys = Object.keys(MastermindBoard.ColorPicker);
-  for(let i = 0; i < keys.length; i++) {
+  for (let i = 0; i < keys.length; i++) {
     const key = keys[i];
     const pos = MastermindBoard.ColorPicker[key];
     const newColor = new TColorPicker(pos);
@@ -78,7 +103,7 @@ function createColorPicker() {
 }
 
 function drawColorPicker() {
-  for(let i = 0; i < colors.length; i++) {
+  for (let i = 0; i < colors.length; i++) {
     const color = colors[i];
     color.draw();
   }
@@ -88,9 +113,12 @@ function drawColorPicker() {
 export function newGame() {
   // 🧹 Step 1: Clear the board! We need to purge all old sprites from the canvas.
   spcvs.removeAllGUISprites();
+  colors = [];
+  computerAnswer = [];
   gameBoard = new TSprite(spcvs, SpriteInfoList.Board, 0, 0);
   menu = new TMenu(spcvs, SpriteInfoList);
   createColorPicker();
+  createComputerAnswer();
 
   // 🏗️ Step 2: Set up the new round!
   // TODO: Empty your tracking arrays (like player answers and color hints).
@@ -102,9 +130,11 @@ function drawGame() {
   // 🧽 Wipe the canvas clean every single frame before drawing the new one.
   spcvs.clearCanvas();
   gameBoard.draw();
+  drawComputerAnswer();
   menu.draw();
   drawColorPicker();
-  
+
+
 
   // 🎨 The Painter's Algorithm!
   // Draw your game objects here. Remember: the first thing you draw goes in the BACK.
