@@ -3,7 +3,6 @@ import { TSpriteDraggable, TSnapTo } from "libSprite";
 import { spcvs, SpriteInfoList, colors, menu } from "./Mastermind.mjs";
 import { MastermindBoard } from "./MastermindBoard.mjs";
 import { TPoint } from "lib2d";
-import { TMenu } from "./menu.js";
 
 let PAR = MastermindBoard.PlayerAnswer.Row1;
 export let playerAnswer = [null, null, null, null];
@@ -31,7 +30,7 @@ export class TColorPicker extends TSpriteDraggable {
             const pos = PAR[i];
             if((aPos.x === pos.x) && (aPos.y === pos.y)) {
                 playerAnswer[i] = this;
-            } 
+            }
         }
         let count = 0
         for(let i = 0; i < playerAnswer.length; i++) {
@@ -42,6 +41,9 @@ export class TColorPicker extends TSpriteDraggable {
         if(count >= 4) {
             menu.enableCheckAnswer();
         }
+        /*if(this.canDrop() === false) {
+            colors.pop();
+        }*/
     }
 
     duplicate() {
