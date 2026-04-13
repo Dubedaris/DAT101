@@ -9,7 +9,7 @@ import { TMenu } from "./menu.js";
 
 //--------------- Objects and Variables ----------------------------------//
 const chkMuteSound = document.getElementById("chkMuteSound");
-const rbDayNight = document.getElementsByName("rbDayNight");
+export const rbDayNight = document.getElementsByName("rbDayNight");
 const cvs = document.getElementById("cvs");
 const spcvs = new TSpriteCanvas(cvs);
 
@@ -35,17 +35,20 @@ export const EGameStatus = {
   idle: 0, countDown: 1, running: 2, heroIsDead: 3, gameOver: 4,
   state: 0
 };
+
 const background = new TBackground(spcvs, SpriteInfoList);
 export const hero = new THero(spcvs, SpriteInfoList);
 const obstacleTable = [];
 const baitTable = [];
 export const menu = new TMenu(spcvs, SpriteInfoList);
 let obstaclePassed = false;
+export let soundMuted = false;
 
 
 //--------------- Functions ----------------------------------------------//
 export function startGame() {
   EGameStatus.state = EGameStatus.running;
+  //menu.playSound();
   setTimeout(spawnObstacles, 3000);
   setTimeout(spawnBait, 3000);
 }
@@ -150,15 +153,26 @@ function onKeyDown(aEvent) {
 
 function setSoundOnOff() {
   // Mute or unmute the game sound based on checkbox
-
+  if(chkMuteSound.checked) {
+    console.log("Sound is muted!")
+    soundMuted = true;
+  } else { 
+    console.log("Sound is not muted!")
+    soundMuted = false;
+  }
+  menu.setMuteSound(soundMuted);
 } // end of setSoundOnOff
 
-function setDayNight(aEvent) {
+export function setDayNight(aEvent) {
   // Set day or night mode based on radio buttons
   // Day mode is when value is 1, night mode is 0, you can use this as a boolean, 1=true, 0=false
   // e.g., isDayMode = (aEvent.target.value == 1);
-  console.log(`Day/Night mode changed: ${aEvent.target.value}`);
-
+  //console.log(`Day/Night mode changed: ${aEvent.target.value}`);
+  if(aEvent.value === "1") {
+    return true;
+  } else if(aEvent.value === "0") {
+    return false;
+  }
 } // end of setDayNight
 
 //--------------- Main Code ----------------------------------------------//

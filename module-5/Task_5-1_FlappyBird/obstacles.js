@@ -11,7 +11,7 @@ const minimumProtrusion = 30;
 export class TObstacles {
     #spObsTop;
     #spObsBottom;
-    #spi;
+    #spi; 
 
     constructor (aSpcvs, aSPI) {
         const x = 600;

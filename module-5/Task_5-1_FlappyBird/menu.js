@@ -1,6 +1,6 @@
 "use strict";
 import { TSprite, TSpriteButton, TSpriteNumber } from "libSprite";
-import { EGameStatus, startGame } from "./FlappyBird.mjs";
+import { EGameStatus, startGame, soundMuted } from "./FlappyBird.mjs";
 import { TSoundFile } from "libSound";
 
 const fnCountDown = "./Media/countDown.mp3";
@@ -14,27 +14,33 @@ export class TMenu {
     #sfRunning;
     #spScore;
     #spGameOver;
+
     constructor(aSpcvs, aSPI) {
         this.#spTitle = new TSprite(aSpcvs, aSPI.flappyBird, aSPI.background.width / 2 - (aSPI.flappyBird.width / 2), 100);
         this.#spPlayBtn = new TSpriteButton(aSpcvs, aSPI.buttonPlay, aSPI.background.width / 2 - (aSPI.buttonPlay.width / 2), 200);
         this.#spCountDown = new TSpriteNumber(aSpcvs, aSPI.numberBig, aSPI.background.width / 2 - (aSPI.numberBig.width / 2), 200);
-        this.#spScore = new TSpriteNumber(aSpcvs, aSPI.numberSmall, 10,10);
-        this.#spGameOver = new TSprite(aSpcvs, aSPI.gameOver, aSPI.background.width / 2 -(aSPI.gameOver.width / 2), 200 )
+        this.#spScore = new TSpriteNumber(aSpcvs, aSPI.numberSmall, 10, 10);
+        this.#spGameOver = new TSprite(aSpcvs, aSPI.gameOver, aSPI.background.width / 2 - (aSPI.gameOver.width / 2), 200)
         this.#spScore.alpha = 0.6;
         this.#spPlayBtn.addEventListener("click", this.spPlayBtnClick.bind(this));
         this.#spCountDown.visible = false;
         this.#sfCountDown = null;
-        this.#sfRunning = null;
+        this.#sfRunning = new TSoundFile(fnRunning);
 
 
     }
 
-    points(aScore) {
-        this.#spScore.value += aScore;
+    playSound() {
+        this.#sfRunning.play();
     }
 
     stopSound() {
         this.#sfRunning.stop();
+        this.#sfCountDown.stop();
+    }
+
+    points(aScore) {
+        this.#spScore.value += aScore;
     }
 
     draw() {
@@ -45,13 +51,13 @@ export class TMenu {
     }
 
     countDown() {
-        this.#spCountDown.value--;
+        //this.#spCountDown.value--;
         if (this.#spCountDown.value > 0) {
             setTimeout(this.countDown.bind(this), 1000);
+            this.#spCountDown.value--;
         } else {
             this.#spCountDown.visible = false;
             startGame();
-            this.#sfRunning = new TSoundFile(fnRunning);
             this.#sfRunning.play();
         }
     }
@@ -64,6 +70,16 @@ export class TMenu {
         this.#spCountDown.value = 3;
         this.#sfCountDown = new TSoundFile(fnCountDown);
         this.#sfCountDown.play();
-        setTimeout(this.countDown.bind(this), 1000);
+        setTimeout(this.countDown.bind(this), 1000);     
+    }
+
+    //Need a method(function?) to toggle sound on and off!
+    setMuteSound(aIsMuted) {
+        aIsMuted = soundMuted;
+        if (aIsMuted) {
+            this.#sfRunning.pause();
+        } else if (!aIsMuted && EGameStatus.running) {
+            this.#sfRunning.play(); 
+        }
     }
 }
