@@ -9,7 +9,7 @@ import { TMenu } from "./menu.js";
 
 //--------------- Objects and Variables ----------------------------------//
 const chkMuteSound = document.getElementById("chkMuteSound");
-export const rbDayNight = document.getElementsByName("rbDayNight");
+const rbDayNight = document.getElementsByName("rbDayNight");
 const cvs = document.getElementById("cvs");
 const spcvs = new TSpriteCanvas(cvs);
 
@@ -36,6 +36,11 @@ export const EGameStatus = {
   state: 0
 };
 
+export const ETimeOfDay = {
+  night: 0, day: 1,
+  time: 0
+};
+
 const background = new TBackground(spcvs, SpriteInfoList);
 export const hero = new THero(spcvs, SpriteInfoList);
 const obstacleTable = [];
@@ -48,7 +53,6 @@ export let soundMuted = false;
 //--------------- Functions ----------------------------------------------//
 export function startGame() {
   EGameStatus.state = EGameStatus.running;
-  //menu.playSound();
   setTimeout(spawnObstacles, 3000);
   setTimeout(spawnBait, 3000);
 }
@@ -153,13 +157,14 @@ function onKeyDown(aEvent) {
 
 function setSoundOnOff() {
   // Mute or unmute the game sound based on checkbox
-  if(chkMuteSound.checked) {
+  if (chkMuteSound.checked) {
     console.log("Sound is muted!")
     soundMuted = true;
-  } else { 
+  } else {
     console.log("Sound is not muted!")
     soundMuted = false;
   }
+  menu.playSound();
   menu.setMuteSound(soundMuted);
 } // end of setSoundOnOff
 
@@ -167,11 +172,13 @@ export function setDayNight(aEvent) {
   // Set day or night mode based on radio buttons
   // Day mode is when value is 1, night mode is 0, you can use this as a boolean, 1=true, 0=false
   // e.g., isDayMode = (aEvent.target.value == 1);
-  //console.log(`Day/Night mode changed: ${aEvent.target.value}`);
-  if(aEvent.value === "1") {
-    return true;
-  } else if(aEvent.value === "0") {
-    return false;
+  const dayNightChange = aEvent.target.value;
+  console.log(`Day/Night mode changed: ${dayNightChange}`);
+
+  if (dayNightChange === 1) {
+    ETimeOfDay.time = ETimeOfDay.day;
+  } else if (dayNightChange === 0) {
+    ETimeOfDay.time = ETimeOfDay.night;
   }
 } // end of setDayNight
 

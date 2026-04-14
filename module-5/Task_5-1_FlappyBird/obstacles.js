@@ -1,6 +1,6 @@
 "use strict";
 import { TSprite } from "libSprite";
-import { hero, EGameStatus } from "./FlappyBird.mjs";
+import { hero, EGameStatus, ETimeOfDay } from "./FlappyBird.mjs";
 
 const easyFlyerGap = 150;
 const hardFlyerGap = 100;

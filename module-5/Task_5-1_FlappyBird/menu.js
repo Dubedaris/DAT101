@@ -26,17 +26,21 @@ export class TMenu {
         this.#spCountDown.visible = false;
         this.#sfCountDown = null;
         this.#sfRunning = new TSoundFile(fnRunning);
+        this.#sfCountDown = new TSoundFile(fnCountDown);
 
 
     }
 
     playSound() {
-        this.#sfRunning.play();
+        if (EGameStatus.state === EGameStatus.running) {
+            this.#sfRunning.play();
+        } else if (EGameStatus.state === EGameStatus.countDown) {
+            this.#sfCountDown.play();
+        }
     }
 
     stopSound() {
         this.#sfRunning.stop();
-        this.#sfCountDown.stop();
     }
 
     points(aScore) {
@@ -58,28 +62,27 @@ export class TMenu {
         } else {
             this.#spCountDown.visible = false;
             startGame();
-            this.#sfRunning.play();
+            //this.#sfRunning.play();
         }
     }
 
     spPlayBtnClick() {
         console.log("button clicked!");
+        EGameStatus.state = EGameStatus.countDown;
         this.#spPlayBtn.hidden = true;
         this.#spTitle.hidden = true;
         this.#spCountDown.visible = true;
         this.#spCountDown.value = 3;
-        this.#sfCountDown = new TSoundFile(fnCountDown);
-        this.#sfCountDown.play();
-        setTimeout(this.countDown.bind(this), 1000);     
+        setTimeout(this.countDown.bind(this), 1000);
     }
 
-    //Need a method(function?) to toggle sound on and off!
+    //Need a method to toggle sound on and off!
     setMuteSound(aIsMuted) {
-        aIsMuted = soundMuted;
         if (aIsMuted) {
             this.#sfRunning.pause();
+            this.#sfCountDown.stop();
         } else if (!aIsMuted && EGameStatus.running) {
-            this.#sfRunning.play(); 
+            this.#sfRunning.play();
         }
     }
 }
