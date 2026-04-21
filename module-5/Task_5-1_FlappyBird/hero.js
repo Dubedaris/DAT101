@@ -1,6 +1,6 @@
 "use strict";
 import { TSprite } from "libSprite";
-import { EGameStatus, menu } from "./FlappyBird.mjs";
+import { EGameStatus, menu, soundMuted } from "./FlappyBird.mjs";
 import { TSineWave } from "lib2d";
 import { TSoundFile } from "libSound";
 
@@ -30,13 +30,22 @@ export class THero extends TSprite {
 
     }
 
+    restart() {
+        console.log("restart!")
+        this.x = 200;
+        this.y = 200;
+        this.animate();
+    }
+
     eat() {
         if (this.#sfFood === null) {
             this.#sfFood = new TSoundFile(fnFood);
         } else {
             this.#sfFood.stop();
         }
-        this.#sfFood.play();
+        if(!soundMuted) {
+            this.#sfFood.play();
+        }  
     }
 
     animate() {
@@ -54,8 +63,11 @@ export class THero extends TSprite {
                 this.animationSpeed = 0;
                 menu.stopSound();
                 if (EGameStatus.state === EGameStatus.gameOver) {
+                    menu.showGameOver();
                     this.#sfGameOver = new TSoundFile(fnGameOver);
-                    this.#sfGameOver.play();
+                    if(!soundMuted) {
+                        this.#sfGameOver.play();
+                    }
                 }
             }
         } else if (EGameStatus.state === EGameStatus.idle) {
@@ -66,7 +78,9 @@ export class THero extends TSprite {
             if (this.#sfCrash === null) {
                 this.#sfCrash = new TSoundFile(fnHeroIsDead);
             }
-            this.#sfCrash.play();
+            if(!soundMuted) {
+                this.#sfCrash.play();
+            } 
         }
     }
 

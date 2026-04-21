@@ -1,6 +1,6 @@
 "use strict";
 import { TSprite } from "libSprite";
-import { hero, EGameStatus, ETimeOfDay } from "./FlappyBird.mjs";
+import { hero, EGameStatus, TimeOfDay } from "./FlappyBird.mjs";
 
 const easyFlyerGap = 150;
 const hardFlyerGap = 100;
@@ -46,6 +46,13 @@ export class TObstacles {
     }
 
     draw() {
+        if(TimeOfDay) {
+            this.#spObsBottom.index = 2;
+            this.#spObsTop.index = 3;
+        } else if(!TimeOfDay) {
+            this.#spObsBottom.index = 0;
+            this.#spObsTop.index = 1;
+        }
         this.#spObsBottom.draw();
         this.#spObsTop.draw();
     }

@@ -1,6 +1,6 @@
 "use strict";
 import { TSprite } from "libSprite";
-import { setDayNight, ETimeOfDay } from "./FlappyBird.mjs";
+import { TimeOfDay } from "./FlappyBird.mjs";
 
 export class TBackground {
     #spriteBackground;
@@ -8,17 +8,18 @@ export class TBackground {
 
     constructor(aSpcvs, aSPI) {
         this.#spriteBackground = new TSprite(aSpcvs, aSPI.background, 0, 0)
+        this.#spriteBackground.index = 0;
         const groundPosition = aSPI.background.height - aSPI.ground.height;
         this.#spriteGround = new TSprite(aSpcvs, aSPI.ground, 0, groundPosition)
     }
 
     drawBackground() {
-       if(ETimeOfDay.time === ETimeOfDay.day) {
-        this.#spriteBackground.index = 0;
-       } else if(ETimeOfDay.time === ETimeOfDay.night) {
-        this.#spriteBackground.index = 1;
+       if(TimeOfDay) {
+        this.#spriteBackground.index = 0; 
+       } else if(!TimeOfDay) {
+        this.#spriteBackground.index = 1; 
        }
-       this.#spriteBackground.draw();  
+       this.#spriteBackground.draw(); 
     }
 
     drawGround() {

@@ -36,15 +36,11 @@ export const EGameStatus = {
   state: 0
 };
 
-export const ETimeOfDay = {
-  night: 0, day: 1,
-  time: 0
-};
-
+export let TimeOfDay = true;
 const background = new TBackground(spcvs, SpriteInfoList);
 export const hero = new THero(spcvs, SpriteInfoList);
-const obstacleTable = [];
-const baitTable = [];
+export let obstacleTable = [];
+export let baitTable = [];
 export const menu = new TMenu(spcvs, SpriteInfoList);
 let obstaclePassed = false;
 export let soundMuted = false;
@@ -59,7 +55,7 @@ export function startGame() {
 
 function spawnObstacles() {
   if (EGameStatus.state === EGameStatus.running) {
-    const obstacles = new TObstacles(spcvs, SpriteInfoList);
+    let obstacles = new TObstacles(spcvs, SpriteInfoList);
     obstacleTable.push(obstacles);
     const nextTime = Math.ceil(Math.random() * 2 + 1);
     setTimeout(spawnObstacles, nextTime * 1000);
@@ -96,7 +92,7 @@ function animateGame() {
     background.animate();
     let deleteObstacles = false;
     for (let i = 0; i < obstacleTable.length; i++) {
-      const obstacles = obstacleTable[i];
+      let obstacles = obstacleTable[i];
       obstacles.animate();
       if (obstacles.x < 0 - 50) {
         deleteObstacles = true;
@@ -121,7 +117,7 @@ function drawGame() {
     bait.draw();
   }
   for (let i = 0; i < obstacleTable.length; i++) {
-    const obstacles = obstacleTable[i];
+    let obstacles = obstacleTable[i];
     obstacles.draw();
   }
   hero.draw();
@@ -141,6 +137,7 @@ function loadGame() {
   //Start animate engine
   setInterval(animateGame, 10);
 
+  EGameStatus.state = EGameStatus.idle;
 } // end of loadGame
 
 
@@ -164,21 +161,17 @@ function setSoundOnOff() {
     console.log("Sound is not muted!")
     soundMuted = false;
   }
-  menu.playSound();
-  menu.setMuteSound(soundMuted);
 } // end of setSoundOnOff
 
-export function setDayNight(aEvent) {
+function setDayNight(aEvent) {
   // Set day or night mode based on radio buttons
-  // Day mode is when value is 1, night mode is 0, you can use this as a boolean, 1=true, 0=false
-  // e.g., isDayMode = (aEvent.target.value == 1);
   const dayNightChange = aEvent.target.value;
   console.log(`Day/Night mode changed: ${dayNightChange}`);
 
-  if (dayNightChange === 1) {
-    ETimeOfDay.time = ETimeOfDay.day;
-  } else if (dayNightChange === 0) {
-    ETimeOfDay.time = ETimeOfDay.night;
+  if (dayNightChange === "1") {
+    TimeOfDay = true;
+  } else if (dayNightChange === "0") {
+    TimeOfDay = false;
   }
 } // end of setDayNight
 
